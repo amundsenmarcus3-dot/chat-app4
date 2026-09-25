@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-
-window.Message = function Message({ 
+// Update the Message component to properly handle polls
+function Message({ 
   message, 
   isOwn, 
   onDelete, 
@@ -85,7 +84,7 @@ window.Message = function Message({
             </div>
           </div>
         ) : (
-          <React.Fragment>
+          <>
             {message.text && <div>{formatMessageText(message.text)}</div>}
             {message.images && message.images.map((url, index) => (
               <img key={index} src={url} alt="Shared image" className="shared-image" />
@@ -94,7 +93,7 @@ window.Message = function Message({
               message.fileType.startsWith('image/') ? (
                 <img src={message.file} alt={message.fileName} />
               ) : (
-                <a href={message.file} target="_blank" rel="noreferrer" download={message.fileName}>
+                <a href={message.file} target="_blank" download={message.fileName}>
                   📎 {message.fileName}
                 </a>
               )
@@ -151,9 +150,9 @@ window.Message = function Message({
                 })}
               </div>
             )}
-          </React.Fragment>
+          </>
         )}
       </div>
     </div>
   );
-};
+}

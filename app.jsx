@@ -1,55 +1,7 @@
 import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
 import React, { useState, useRef, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-
-// --- START OF MOCK BACKEND ---
-class WebsimSocket {
-  constructor() {
-    this.party = { client: { username: "local_user_" + Math.floor(Math.random() * 1000) }, peers: {} };
-    this.listeners = [];
-  }
-  collection(name) {
-    return {
-      create: async (data) => {
-        const item = { ...data, id: Date.now().toString(), created_at: new Date().toISOString(), username: this.party.client.username };
-        const items = JSON.parse(localStorage.getItem(`mock_db_${name}`) || '[]');
-        items.push(item);
-        localStorage.setItem(`mock_db_${name}`, JSON.stringify(items));
-        this.notify(name, items);
-        return item;
-      },
-      getList: async () => JSON.parse(localStorage.getItem(`mock_db_${name}`) || '[]'),
-      filter: (criteria) => this.collection(name), 
-      subscribe: (callback) => {
-        this.listeners.push({ name, cb: callback });
-        callback(JSON.parse(localStorage.getItem(`mock_db_${name}`) || '[]'));
-        return () => { this.listeners = this.listeners.filter(l => l.cb !== callback); };
-      },
-      delete: async (id) => {
-        let items = JSON.parse(localStorage.getItem(`mock_db_${name}`) || '[]');
-        items = items.filter(i => i.id !== id);
-        localStorage.setItem(`mock_db_${name}`, JSON.stringify(items));
-        this.notify(name, items);
-      },
-      update: async (id, data) => {
-        let items = JSON.parse(localStorage.getItem(`mock_db_${name}`) || '[]');
-        items = items.map(i => i.id === id ? { ...i, ...data } : i);
-        localStorage.setItem(`mock_db_${name}`, JSON.stringify(items));
-        this.notify(name, items);
-      }
-    };
-  }
-  notify(name, items) {
-    this.listeners.filter(l => l.name === name).forEach(l => l.cb(items));
-  }
-  send(data) { console.log("Mock broadcast:", data); }
-}
-
-const websim = {
-  upload: async (file) => URL.createObjectURL(file)
-};
-// --- END OF MOCK BACKEND ---
-
+import { WebsimSocket } from "@websim/websim-socket";
 const initialCustomSettings = {
   bgColor: "#f5f5f5",
   chatBg: "#ffffff",
@@ -1601,6 +1553,7 @@ function ChatRoom({
           title: pollTitle,
           options: validOptions,
           votes: {}
+          // Initialize empty votes object
         }
       });
       setShowPollCreator(false);
@@ -3284,7 +3237,7 @@ function ChatRoom({
       lineNumber: 1564,
       columnNumber: 7
     }, this),
-showPollCreator && /* @__PURE__ */ jsxDEV("div", { className: "modal", children: /* @__PURE__ */ jsxDEV("div", { className: "modal-content", children: [
+    showPollCreator && /* @__PURE__ */ jsxDEV("div", { className: "modal", children: /* @__PURE__ */ jsxDEV("div", { className: "modal-content", children: [
       /* @__PURE__ */ jsxDEV("h3", { children: "Create Poll" }, void 0, false, {
         fileName: "<stdin>",
         lineNumber: 2158,
@@ -3534,7 +3487,6 @@ showPollCreator && /* @__PURE__ */ jsxDEV("div", { className: "modal", children:
     columnNumber: 5
   }, this);
 }
-
 function Message({ message, isOwn, onDelete, onStartEdit, onSaveEdit, onCancelEdit, isEditing, formatMessageText, onSpeak, ttsEnabled, onVote, playEffect, room, username }) {
   const [editText, setEditText] = useState(message.text || "");
   const displayName = message.nickname || message.username;
@@ -3566,7 +3518,6 @@ function Message({ message, isOwn, onDelete, onStartEdit, onSaveEdit, onCancelEd
       });
     }
   }, [message.video]);
-  
   return /* @__PURE__ */ jsxDEV("div", { className: `message ${isOwn ? "own" : ""} ${message.isAI ? "ai-message" : ""}`, children: [
     /* @__PURE__ */ jsxDEV(
       "img",
@@ -3852,7 +3803,6 @@ function Message({ message, isOwn, onDelete, onStartEdit, onSaveEdit, onCancelEd
     columnNumber: 5
   }, this);
 }
-
 createRoot(document.getElementById("app")).render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
   lineNumber: 2450,
