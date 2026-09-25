@@ -12,14 +12,19 @@
           "react": "https://esm.sh/react@18.3.1",
           "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
           "react/jsx-dev-runtime": "https://esm.sh/react@18.3.1/jsx-dev-runtime",
-          "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
-          "@websim/websim-socket": "https://esm.websim.com/@websim/websim-socket"
+          "react-dom/client": "https://esm.sh/react-dom@18.3.1/client"
         }
       }
     </script>
+    <!-- Add Babel to translate the raw JSX in Message.js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body>
     <div id="app"></div>
+    
+    <!-- Load Message component first -->
+    <script type="text/babel" data-type="module" src="./Message.js"></script>
+    <!-- Load main app -->
     <script type="module" src="./app.jsx"></script>
   </body>
 </html>
