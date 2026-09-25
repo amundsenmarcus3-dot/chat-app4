@@ -16,15 +16,12 @@
         }
       }
     </script>
-    <!-- Add Babel to translate the raw JSX in Message.js -->
+    <!-- Babel compiles the raw JSX in Message.js for the browser -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body>
     <div id="app"></div>
-    
-    <!-- Load Message component first -->
     <script type="text/babel" data-type="module" src="./Message.js"></script>
-    <!-- Load main app -->
     <script type="module" src="./app.jsx"></script>
   </body>
 </html>
